@@ -38,6 +38,6 @@ func main() {
 	}
 	r := app.router()
 
-	r.Run(fmt.Sprintf(":%d", app.config.port))
+	_ = r.Run(fmt.Sprintf(":%d", app.config.port))
 	fmt.Println("Hello world!")
 }

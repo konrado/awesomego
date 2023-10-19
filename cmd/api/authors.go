@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"github.com/gin-gonic/gin"
+	"math/rand"
 	"net/http"
 	"strconv"
 )
@@ -14,7 +15,9 @@ var authors = map[int]string{
 }
 
 func (app *application) createAuthor(c *gin.Context) {
-	c.Header("Location", fmt.Sprintf("/authors/%d", 100))
+	r1 := rand.Intn(20)
+	authors[r1] = "Added"
+	c.Header("Location", fmt.Sprintf("/authors/%d", r1))
 	c.JSON(http.StatusCreated, gin.H{})
 }
 
