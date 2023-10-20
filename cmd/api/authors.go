@@ -1,11 +1,13 @@
 package main
 
 import (
+	"awesome.itkon.pl/internal/data"
 	"fmt"
 	"github.com/gin-gonic/gin"
+	"github.com/google/uuid"
 	"math/rand"
 	"net/http"
-	"strconv"
+	"time"
 )
 
 var authors = map[int]string{
@@ -22,17 +24,16 @@ func (app *application) createAuthor(c *gin.Context) {
 }
 
 func (app *application) viewAuthor(c *gin.Context) {
-	authorId, _ := strconv.Atoi(c.Params.ByName("id"))
-	author, ok := authors[authorId]
+	authorId, _ := uuid.Parse(c.Params.ByName("id"))
 
-	if !ok {
-		c.JSON(http.StatusNotFound, gin.H{})
-
-		return
+	author := data.Author{
+		Id:        authorId,
+		FirstName: "John",
+		LastName:  "Doe",
+		CreatedAt: time.Now(),
 	}
 
-	c.JSON(http.StatusOK, gin.H{
-		"id":   authorId,
-		"name": author,
-	})
+	extra := map[string]string{"version": version}
+
+	c.JSON(http.StatusOK, data.View{Data: author, Extra: extra})
 }
